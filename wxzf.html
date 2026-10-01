@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>支付</title>
     <style>
         body {
@@ -13,6 +13,7 @@
             align-items: center;
             gap: 24px;
             min-height: 100vh;
+            min-height: 100dvh;
             margin: 0;
             padding: 24px;
             box-sizing: border-box;
@@ -23,13 +24,40 @@
             max-width: 100%;
             height: auto;
         }
+
+        .tip {
+            position: fixed;
+            bottom: 100px;
+            margin: 0;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                flex-direction: column;
+                justify-content: center;
+                gap: 20px;
+                padding: calc(20px + env(safe-area-inset-top)) 16px calc(76px + env(safe-area-inset-bottom));
+            }
+
+            img {
+                width: min(78vw, 300px);
+            }
+
+            .tip {
+                left: 0;
+                right: 0;
+                bottom: calc(24px + env(safe-area-inset-bottom));
+                text-align: center;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <img src="wxzf.jpg" alt="微信支付二维码">
-    <img src="zfb.png" alt="支付宝支付二维码">
-    <p style="position: fixed; bottom: 100px;">感谢您的支持，我会继续创作！</p>
+    <img src="https://xiaoxue-1-0gpwsb5z19f2ea65-1323834396.tcloudbaseapp.com/img/wxzf.jpg" alt="微信支付二维码">
+    <img src="https://xiaoxue-1-0gpwsb5z19f2ea65-1323834396.tcloudbaseapp.com/img/zfb.png" alt="支付宝支付二维码">
+    <p class="tip">感谢您的支持，我会继续创作！</p>
 </body>
 
 </html>
