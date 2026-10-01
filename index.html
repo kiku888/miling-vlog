@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>少女の导航站 ✨ 我的小窝与博客</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="aurora-bg" aria-hidden="true"></div>
+
+    <!-- ============ 导航栏 ============ -->
+    <header class="site-header" id="site-header">
+      <div class="container navbar-inner">
+        <a class="brand" href="#/" data-route="/">
+          <span class="brand-icon" aria-hidden="true">🌸</span>
+          <span class="gradient-text">少女の导航站</span>
+        </a>
+
+        <nav class="nav-desktop" aria-label="主导航">
+          <a class="nav-link" href="#/" data-route="/">首页</a>
+          <a class="nav-link" href="#/xiaowo" data-route="/xiaowo">我的小窝</a>
+          <a class="nav-link" href="#/blog" data-route="/blog">博客</a>
+        </nav>
+
+        <button type="button" class="nav-toggle" id="nav-toggle"
+                aria-label="打开菜单" aria-controls="nav-mobile-sheet" aria-expanded="false">
+          <span aria-hidden="true">☰</span>
+        </button>
+      </div>
+
+      <nav class="nav-mobile-sheet" id="nav-mobile-sheet" aria-label="移动端导航">
+        <a class="nav-link" href="#/" data-route="/">首页</a>
+        <a class="nav-link" href="#/xiaowo" data-route="/xiaowo">我的小窝</a>
+        <a class="nav-link" href="#/blog" data-route="/blog">博客</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ============ 首页 ============ -->
+      <section class="view" id="view-home">
+        <!-- Hero -->
+        <section class="hero">
+          <div class="petal float-petal" style="top:40px;left:8%;font-size:42px;opacity:.5" aria-hidden="true">🌸</div>
+          <div class="petal float-petal-slow" style="top:140px;right:10%;font-size:34px;opacity:.45" aria-hidden="true">🌸</div>
+          <div class="petal float-petal" style="bottom:20px;left:20%;font-size:28px;opacity:.4" aria-hidden="true">✨</div>
+
+          <div class="container hero-inner">
+            <div class="eyebrow center">✨ Welcome to my little garden ✨</div>
+            <h1>一个充满<span class="gradient-text">少女心</span>的<br />数字花园</h1>
+            <p class="lead">这里收藏着我喜欢的角落、写下的文字，以及想分享给你的一切。选一个目的地，开始今天的旅程吧。</p>
+            <div class="hero-actions">
+              <a class="btn-primary" href="#/" data-anchor="destinations">探索导航 →</a>
+              <a class="btn-secondary" href="#/xiaowo">去我的小窝看看</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- 目的地导航 -->
+        <section class="section-destinations" id="destinations">
+          <div class="container">
+            <div class="section-head">
+              <div class="eyebrow center">💕 Pick a path 💕</div>
+              <h2>想去哪儿呢 <span class="gradient-text">点击直达</span></h2>
+            </div>
+            <div class="dest-grid" id="dest-grid"></div>
+          </div>
+        </section>
+
+        <!-- 小窝预告 -->
+        <section class="section-nest-teaser">
+          <div class="container">
+            <div class="glass-card nest-teaser">
+              <div class="teaser-aurora" aria-hidden="true"></div>
+              <div class="teaser-text">
+                <div class="eyebrow">🌸 我的小窝 · 全能版</div>
+                <h2>时钟、相册、留言板与音乐角<br />都在这个小窝里</h2>
+                <p>进来看看我的实时小窝吧：实时时钟、重要日子倒计时、回忆相册、访客留言，还有我的私人歌单。</p>
+                <a class="btn-primary" href="#/xiaowo">进小窝看看 →</a>
+              </div>
+              <div class="teaser-imgs">
+                <img src="img/12.svg" alt="日落时分" />
+                <img src="img/78.svg" alt="樱花树下" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 博客预告 -->
+        <section class="section-blog-teaser" data-testid="blog-posts-section">
+          <div class="container">
+            <div class="section-head-side">
+              <div>
+                <div class="eyebrow">✍️ 技术与生活</div>
+                <h2>最近在写 <span class="gradient-text">什么</span></h2>
+              </div>
+              <a class="btn-secondary" href="#/blog">查看全部文章 →</a>
+            </div>
+            <div class="blog-grid" id="blog-teaser-grid"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============ 我的小窝 ============ -->
+      <section class="view" id="view-nest">
+        <section class="nest-hero">
+          <div class="container">
+            <div class="eyebrow center">🌸 我的小窝 · 全能版 🌸</div>
+            <h1>你好呀 <span class="gradient-text">✨</span></h1>
+            <p>爱画画 · 爱音乐 · 爱生活 &mdash; 是小玲呀 🎀</p>
+          </div>
+        </section>
+
+        <!-- 时钟 / 倒计时 / 治愈 -->
+        <section class="nest-widgets">
+          <div class="container nest-widget-grid">
+            <div class="glass-card widget-card">
+              <div class="eyebrow center">⏰ 实时时钟</div>
+              <div class="clock-time" id="clock-time">00:00:00</div>
+              <p class="clock-date" id="clock-date"></p>
+            </div>
+
+            <div class="glass-card widget-card">
+              <div class="eyebrow center">🎉 年末倒计时</div>
+              <div class="countdown">
+                <div><div class="num" id="cd-days">00</div><div class="unit">天</div></div>
+                <div><div class="num" id="cd-hours">00</div><div class="unit">时</div></div>
+                <div><div class="num" id="cd-minutes">00</div><div class="unit">分</div></div>
+                <div><div class="num" id="cd-seconds">00</div><div class="unit">秒</div></div>
+              </div>
+            </div>
+
+            <div class="glass-card widget-card widget-quote" style="text-align:left">
+              <div class="eyebrow">🍵 今日治愈</div>
+              <p class="quote">&ldquo;且将新火试新茶，诗酒跋年华。&rdquo;</p>
+              <p class="author">&mdash; 苏轼</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 相册 -->
+        <section class="nest-album">
+          <div class="container">
+            <div class="eyebrow">📷 回忆相册</div>
+            <h2>那些<span class="gradient-text">定格的瞬间</span></h2>
+            <div class="album-scroll" id="album-scroll"></div>
+          </div>
+        </section>
+
+        <!-- 留言板 + 音乐角 -->
+        <div class="nest-split">
+          <div class="glass-card split-card">
+            <div class="eyebrow">💬 访客留言</div>
+            <h2>留下你的<span class="gradient-text">小想法</span></h2>
+
+            <form class="guestbook-form" id="guestbook-form">
+              <input type="text" id="gb-name" placeholder="你的昵称（选填）" maxlength="30" />
+              <textarea id="gb-text" rows="3" placeholder="写点什么给小玲吧…" maxlength="500"></textarea>
+              <button type="submit" class="btn-primary">发布留言</button>
+            </form>
+
+            <ul class="message-list" id="message-list"></ul>
+          </div>
+
+          <div class="glass-card split-card music-card">
+            <div class="eyebrow">🎵 音乐角</div>
+            <h2>正在<span class="gradient-text">播放</span></h2>
+
+            <div class="now-playing">
+              <button type="button" class="play-btn" id="play-btn" aria-label="播放">▶</button>
+              <div style="flex:1;min-width:0">
+                <div class="song-name" id="now-song"></div>
+                <div class="song-sub">小玲的私人歌单</div>
+              </div>
+            </div>
+
+            <div class="eyebrow playlist-head" id="playlist-head">我的歌单</div>
+            <ul class="playlist" id="playlist"></ul>
+          </div>
+        </div>
+
+        <!-- 快捷链接 -->
+        <section class="nest-quicklinks">
+          <div class="container">
+            <div class="eyebrow">🧭 想去哪儿</div>
+            <h2>点击<span class="gradient-text">直达</span></h2>
+            <div class="quicklink-grid" id="quicklink-grid"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============ 博客列表 ============ -->
+      <section class="view" id="view-blog">
+        <section class="blog-list-section" data-testid="blog-list">
+          <div class="container">
+            <div class="blog-list-head">
+              <div class="eyebrow center">✍️ 技术与生活</div>
+              <h1>记录成长的 <span class="gradient-text">每一天</span></h1>
+              <p>前端开发、技术实践与个人成长的灵感集合</p>
+            </div>
+
+            <div class="cat-bar" id="category-bar"></div>
+
+            <p class="state-text" id="blog-list-empty" style="display:none;text-align:center"></p>
+            <div class="blog-grid" id="blog-list-grid"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ============ 文章详情 ============ -->
+      <section class="view" id="view-post">
+        <section class="blog-post-section" data-testid="blog-detail">
+          <div class="container blog-post-inner" id="blog-post-container"></div>
+        </section>
+      </section>
+    </main>
+
+    <!-- ============ 页脚 ============ -->
+    <footer class="site-footer">
+      <div class="container footer-main">
+        <div class="footer-about">
+          <div class="footer-brand">
+            <span aria-hidden="true">🌸</span>
+            <span class="gradient-text">少女の导航站</span>
+          </div>
+          <p>一个存放日常、心情与技术的小角落，欢迎路过的你停留片刻。</p>
+        </div>
+
+        <div>
+          <h3>快捷入口</h3>
+          <ul class="footer-links">
+            <li><a href="#/" data-route="/">首页导航</a></li>
+            <li><a href="#/xiaowo" data-route="/xiaowo">我的小窝</a></li>
+            <li><a href="#/blog" data-route="/blog">技术博客</a></li>
+		<li><a href="bkes.html">技术博客</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3>连接我</h3>
+          <ul class="footer-social">
+            <li><a href="https://www.bilibili.com/" target="_blank" rel="noreferrer">B站</a></li>
+            <li><a href="https://www.xiaohongshu.com/" target="_blank" rel="noreferrer">小红书</a></li>
+            <li><a href="https://www.zhihu.com/" target="_blank" rel="noreferrer">知乎</a></li>
+            <li><a href="https://github.com/luziyao504?tab=repositories" target="_blank" rel="noreferrer">GitHub</a></li>
+            <li><a href="https://music.163.com/" target="_blank" rel="noreferrer">网易云音乐</a></li>
+            <li><a href="https://www.douyin.com/user/MS4wLjABAAAAoSuENO2Dti0k27EAO2vGjsUN6YBTE9dsHj9brpg7ojy-fHvG_6souuIm_uoM0dKz" target="_blank" rel="noreferrer">抖音</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="container">© <span id="footer-year"></span> 少女の导航站 · 用温柔与代码编织每一天 🌸</div>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

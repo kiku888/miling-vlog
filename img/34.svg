@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+  <defs>
+    <linearGradient id="g34" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E8ECFF"/>
+      <stop offset="0.55" stop-color="#C9A7FF"/>
+      <stop offset="1" stop-color="#7C6FE0"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="url(#g34)"/>
+  <polygon points="120,560 300,280 480,560" fill="#FFFFFF" opacity="0.75"/>
+        <polygon points="250,360 300,280 350,360 300,400" fill="#DDE3FF"/>
+        <polygon points="60,620 230,420 400,620" fill="#FFFFFF" opacity="0.5"/>
+        <polygon points="260,640 420,440 580,640" fill="#FFFFFF" opacity="0.4"/>
+  <text x="300" y="430" text-anchor="middle" font-size="150">🏔️</text>
+  <text x="300" y="560" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="44" font-weight="700" fill="#FFFFFF" opacity="0.95">雪山之巅</text>
+</svg>
