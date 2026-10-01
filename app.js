@@ -118,12 +118,12 @@ const DESTINATIONS = [
 ];
 
 const PHOTOS = [
-  { src: 'img/12.svg', label: '日落时分' },
-  { src: 'img/34.svg', label: '雪山之颅' },
-  { src: 'img/56.svg', label: '海边漫步' },
-  { src: 'img/78.svg', label: '樱花树下' },
-  { src: 'img/90.svg', label: '星空银河' },
-  { src: 'img/110.svg', label: '烟花大会' },
+  { src: 'img/12.jpg', label: '日落时分' },
+  { src: 'img/34.jpg', label: '雪山之颅' },
+  { src: 'img/56.jpg', label: '海边漫步' },
+  { src: 'img/78.jpg', label: '樱花树下' },
+  { src: 'img/90.jpg', label: '星空银河' },
+  { src: 'img/110.jpg', label: '烟花大会' },
 ];
 
 const PLAYLIST = [
