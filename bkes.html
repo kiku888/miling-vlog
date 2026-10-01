@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的个人博客 - 记录技术与生活</title>
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入Font Awesome图标 -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- 配置Tailwind自定义主题 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#36BFFA',
+            dark: '#1E293B',
+            light: '#F8FAFC'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Merriweather', 'Georgia', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .blog-card-hover {
+        @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+      }
+      .nav-link-active {
+        @apply text-primary border-b-2 border-primary;
+      }
+      .loading-state {
+        @apply opacity-70 cursor-not-allowed;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+  <!-- 导航栏 -->
+  <header class="sticky top-0 z-50 bg-white shadow-sm">
+    <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="#" class="text-2xl font-bold text-primary flex items-center">
+        <i class="fa fa-pencil-square-o mr-2"></i>
+        <span>文心博客</span>
+      </a>
+      
+      <!-- 桌面端导航 -->
+      <div class="hidden md:flex space-x-8">
+        <a href="#home" class="nav-link-active py-2 font-medium">首页</a>
+        <a href="#blog" class="py-2 font-medium text-gray-600 hover:text-primary transition-colors">博客</a>
+        <a href="#categories" class="py-2 font-medium text-gray-600 hover:text-primary transition-colors">分类</a>
+        <a href="#about" class="py-2 font-medium text-gray-600 hover:text-primary transition-colors">关于我</a>
+      </div>
+      
+      <!-- 搜索框 -->
+      <div class="hidden md:flex items-center relative">
+        <input type="text" placeholder="搜索文章..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+        <i class="fa fa-search absolute left-3 text-gray-400"></i>
+      </div>
+      
+      <!-- 移动端菜单按钮 -->
+      <button id="mobile-menu-btn" class="md:hidden text-gray-700 focus:outline-none">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </nav>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+      <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+        <a href="#home" class="nav-link-active py-2 font-medium">首页</a>
+        <a href="#blog" class="py-2 font-medium text-gray-600 hover:text-primary transition-colors">博客</a>
+        <a href="#categories" class="py-2 font-medium text-gray-600 hover:text-primary transition-colors">分类</a>
+        <a href="#about" class="py-2 font-medium text-gray-600 hover:text-primary transition-colors">关于我</a>
+        <div class="relative py-2">
+          <input type="text" placeholder="搜索文章..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+          <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 首页横幅 -->
+    <section id="home" class="bg-gradient-to-r from-primary to-secondary text-white py-16 md:py-24">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl">
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">记录技术成长，分享生活感悟</h1>
+          <p class="text-lg md:text-xl opacity-90 mb-8">专注于前端开发、技术实践与个人成长的博客平台</p>
+          <a href="#blog" class="inline-block bg-white text-primary font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+            浏览最新文章 <i class="fa fa-arrow-right ml-2"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 博客列表区域 -->
+    <section id="blog" class="py-12 md:py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">最新博客文章</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">在这里分享我的技术心得、项目经验和生活点滴，希望能给你带来启发</p>
+        </div>
+
+        <!-- 分类筛选栏 -->
+        <div id="categories" class="flex flex-wrap justify-center gap-3 mb-10">
+          <button class="category-btn active bg-primary text-white px-4 py-2 rounded-full text-sm font-medium" data-category="all">
+            全部文章
+          </button>
+          <button class="category-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors" data-category="frontend">
+            前端开发
+          </button>
+          <button class="category-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors" data-category="backend">
+            后端技术
+          </button>
+          <button class="category-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors" data-category="project">
+            项目实战
+          </button>
+          <button class="category-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-300 transition-colors" data-category="life">
+            生活感悟
+          </button>
+        </div>
+
+        <!-- 博客卡片列表 (默认显示) -->
+        <div id="blog-card-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- 博客卡片1 -->
+          <article class="bg-white rounded-xl shadow-md overflow-hidden blog-card-hover" data-category="frontend">
+            <img src="https://picsum.photos/800/450?random=1" alt="Tailwind CSS实战教程" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span class="bg-primary/10 text-primary px-2 py-1 rounded text-xs mr-3">前端开发</span>
+                <span><i class="fa fa-calendar-o mr-1"></i> 2025-12-20</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2 hover:text-primary transition-colors">
+                <a href="#article-detail">Tailwind CSS从入门到精通：构建现代化响应式网页</a>
+              </h3>
+              <p class="text-gray-600 mb-4 line-clamp-3">
+                Tailwind CSS作为一款实用优先的CSS框架，正在被越来越多的开发者使用。本文将详细介绍Tailwind CSS的核心概念、安装配置以及实战技巧，帮助你快速掌握这款高效的样式工具...
+              </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <img src="https://picsum.photos/100/100?random=10" alt="作者头像" class="w-10 h-10 rounded-full object-cover">
+                  <span class="ml-2 text-sm font-medium">张三</span>
+                </div>
+                <a href="#article-detail" class="text-primary font-medium text-sm hover:underline">
+                  阅读更多 <i class="fa fa-angle-right ml-1"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 博客卡片2 -->
+          <article class="bg-white rounded-xl shadow-md overflow-hidden blog-card-hover" data-category="backend">
+            <img src="https://picsum.photos/800/450?random=2" alt="Node.js后端开发" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span class="bg-secondary/10 text-secondary px-2 py-1 rounded text-xs mr-3">后端技术</span>
+                <span><i class="fa fa-calendar-o mr-1"></i> 2025-12-18</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2 hover:text-primary transition-colors">
+                <a href="#article-detail">Node.js+Express构建RESTful API：从零到部署</a>
+              </h3>
+              <p class="text-gray-600 mb-4 line-clamp-3">
+                本文将带领大家使用Node.js和Express框架搭建一套完整的RESTful API，包括路由设计、中间件使用、数据库连接、身份验证以及最终的服务器部署，适合后端初学者入门学习...
+              </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <img src="https://picsum.photos/100/100?random=10" alt="作者头像" class="w-10 h-10 rounded-full object-cover">
+                  <span class="ml-2 text-sm font-medium">张三</span>
+                </div>
+                <a href="#article-detail" class="text-primary font-medium text-sm hover:underline">
+                  阅读更多 <i class="fa fa-angle-right ml-1"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 博客卡片3 -->
+          <article class="bg-white rounded-xl shadow-md overflow-hidden blog-card-hover" data-category="project">
+            <img src="https://picsum.photos/800/450?random=3" alt="Vue3项目实战" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs mr-3">项目实战</span>
+                <span><i class="fa fa-calendar-o mr-1"></i> 2025-12-15</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2 hover:text-primary transition-colors">
+                <a href="#article-detail">Vue3+Pinia构建电商后台管理系统：实战详解</a>
+              </h3>
+              <p class="text-gray-600 mb-4 line-clamp-3">
+                基于Vue3、Vite、Pinia和Element Plus构建的电商后台管理系统，包含用户管理、商品管理、订单管理等核心功能。本文将详细讲解项目架构设计、组件封装和状态管理的实现思路...
+              </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <img src="https://picsum.photos/100/100?random=10" alt="作者头像" class="w-10 h-10 rounded-full object-cover">
+                  <span class="ml-2 text-sm font-medium">张三</span>
+                </div>
+                <a href="#article-detail" class="text-primary font-medium text-sm hover:underline">
+                  阅读更多 <i class="fa fa-angle-right ml-1"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 博客卡片4 -->
+          <article class="bg-white rounded-xl shadow-md overflow-hidden blog-card-hover" data-category="life">
+            <img src="https://picsum.photos/800/450?random=4" alt="程序员成长之路" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs mr-3">生活感悟</span>
+                <span><i class="fa fa-calendar-o mr-1"></i> 2025-12-10</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2 hover:text-primary transition-colors">
+                <a href="#article-detail">程序员的三年成长之路：从入门到资深工程师的蜕变</a>
+              </h3>
+              <p class="text-gray-600 mb-4 line-clamp-3">
+                作为一名从业三年的程序员，我经历了从零基础入门到独立负责大型项目的成长过程。本文将分享我的学习方法、踩过的坑以及职业规划建议，希望能给刚入行的小伙伴一些参考...
+              </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <img src="https://picsum.photos/100/100?random=10" alt="作者头像" class="w-10 h-10 rounded-full object-cover">
+                  <span class="ml-2 text-sm font-medium">张三</span>
+                </div>
+                <a href="#article-detail" class="text-primary font-medium text-sm hover:underline">
+                  阅读更多 <i class="fa fa-angle-right ml-1"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 博客卡片5 -->
+          <article class="bg-white rounded-xl shadow-md overflow-hidden blog-card-hover" data-category="frontend">
+            <img src="https://picsum.photos/800/450?random=5" alt="React Hooks详解" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span class="bg-primary/10 text-primary px-2 py-1 rounded text-xs mr-3">前端开发</span>
+                <span><i class="fa fa-calendar-o mr-1"></i> 2025-12-05</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2 hover:text-primary transition-colors">
+                <a href="#article-detail">React Hooks完全指南：从基础到高级用法</a>
+              </h3>
+              <p class="text-gray-600 mb-4 line-clamp-3">
+                React Hooks彻底改变了React组件的编写方式，让函数组件拥有了状态管理能力。本文将全面讲解useState、useEffect等常用Hooks的使用场景，以及自定义Hooks的封装技巧...
+              </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <img src="https://picsum.photos/100/100?random=10" alt="作者头像" class="w-10 h-10 rounded-full object-cover">
+                  <span class="ml-2 text-sm font-medium">张三</span>
+                </div>
+                <a href="#article-detail" class="text-primary font-medium text-sm hover:underline">
+                  阅读更多 <i class="fa fa-angle-right ml-1"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 博客卡片6 -->
+          <article class="bg-white rounded-xl shadow-md overflow-hidden blog-card-hover" data-category="life">
+            <img src="https://picsum.photos/800/450?random=6" alt="技术面试技巧" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-3">
+                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs mr-3">生活感悟</span>
+                <span><i class="fa fa-calendar-o mr-1"></i> 2025-12-01</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2 hover:text-primary transition-colors">
+                <a href="#article-detail">2025年前端面试高频题汇总：附详细解答思路</a>
+              </h3>
+              <p class="text-gray-600 mb-4 line-clamp-3">
+                临近年底，很多小伙伴都在准备跳槽面试。本文汇总了2025年前端面试中的高频考点，包括JavaScript基础、框架原理、性能优化等内容，并提供了详细的解答思路和代码示例...
+              </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <img src="https://picsum.photos/100/100?random=10" alt="作者头像" class="w-10 h-10 rounded-full object-cover">
+                  <span class="ml-2 text-sm font-medium">张三</span>
+                </div>
+                <a href="#article-detail" class="text-primary font-medium text-sm hover:underline">
+                  阅读更多 <i class="fa fa-angle-right ml-1"></i>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- 生活感悟视频框架 (默认隐藏) -->
+        <div id="life-video-container" class="hidden flex flex-col items-center gap-8">
+          <div class="w-full max-w-4xl bg-white rounded-xl shadow-md overflow-hidden">
+            <!-- 视频播放器 -->
+            <div class="relative aspect-video w-full bg-black">
+              <video id="life-video" class="w-full h-full object-contain" autoplay loop controls poster="https://picsum.photos/1280/720?random=100">
+                <source id="video-source" src="" type="video/mp4">
+                您的浏览器不支持HTML5视频播放，请升级浏览器。
+              </video>
+              <!-- 视频标题 -->
+              <div class="absolute bottom-4 left-4 right-4 bg-black/70 text-white p-3 rounded-lg">
+                <h3 id="video-title" class="text-xl font-medium">加载中...</h3>
+              </div>
+              <!-- 加载提示 -->
+              <div id="video-loading" class="absolute inset-0 flex items-center justify-center bg-black/50 hidden">
+                <i class="fa fa-spinner fa-spin text-3xl text-white"></i>
+              </div>
+            </div>
+            <!-- 视频信息 -->
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                  <img src="https://picsum.photos/100/100?random=10" alt="作者头像" class="w-10 h-10 rounded-full object-cover">
+                  <span class="ml-2 text-sm font-medium">张三</span>
+                </div>
+                <span id="video-type" class="text-sm text-gray-500">未知分类</span>
+              </div>
+              <p id="video-desc" class="text-gray-600">
+                正在获取视频描述...
+              </p>
+              <div class="mt-2 text-sm text-gray-500">
+                <span id="video-size">视频大小：未知</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 下一个按钮 -->
+          <button id="next-video-btn" class="bg-primary text-white font-medium px-8 py-3 rounded-lg hover:bg-primary/90 transition-all duration-300 flex items-center">
+            <i class="fa fa-step-forward mr-2"></i>
+            下一个视频
+          </button>
+          
+          <!-- 错误提示 -->
+          <div id="video-error" class="hidden w-full max-w-4xl bg-red-50 text-red-600 p-4 rounded-lg border border-red-200">
+            <i class="fa fa-exclamation-circle mr-2"></i>
+            <span id="error-message">获取视频失败，请稍后重试</span>
+          </div>
+        </div>
+
+        <!-- 加载更多按钮 (仅在非生活感悟分类显示) -->
+        <div id="load-more-container" class="text-center mt-12">
+          <button class="bg-white border border-primary text-primary font-medium px-6 py-3 rounded-lg hover:bg-primary hover:text-white transition-all duration-300">
+            加载更多文章 <i class="fa fa-refresh ml-2"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 文章详情模态框 (默认隐藏) -->
+    <div id="article-detail" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="relative">
+          <!-- 关闭按钮 -->
+          <button id="close-detail" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center z-10">
+            <i class="fa fa-times text-gray-700"></i>
+          </button>
+          
+          <!-- 文章头部图片 -->
+          <img src="https://picsum.photos/1200/400?random=1" alt="文章封面" class="w-full h-64 md:h-80 object-cover">
+        </div>
+        
+        <div class="p-6 md:p-8">
+          <div class="flex items-center text-sm text-gray-500 mb-4">
+            <span class="bg-primary/10 text-primary px-2 py-1 rounded text-xs mr-3">前端开发</span>
+            <span><i class="fa fa-calendar-o mr-1"></i> 2025-12-20</span>
+            <span class="ml-4"><i class="fa fa-eye mr-1"></i> 1258</span>
+            <span class="ml-4"><i class="fa fa-comment-o mr-1"></i> 26</span>
+          </div>
+          
+          <h2 class="text-2xl md:text-3xl font-bold mb-6">Tailwind CSS从入门到精通：构建现代化响应式网页</h2>
+          
+          <div class="flex items-center mb-8">
+            <img src="https://picsum.photos/100/100?random=10" alt="作者头像" class="w-12 h-12 rounded-full object-cover">
+            <div class="ml-4">
+              <h4 class="font-medium">张三</h4>
+              <p class="text-sm text-gray-500">资深前端工程师 | 5年Web开发经验</p>
+            </div>
+          </div>
+          
+          <div class="prose max-w-none text-gray-700">
+            <p class="mb-4">
+              大家好，今天我们来深入学习Tailwind CSS这款革命性的CSS框架。在传统的CSS开发中，我们往往需要定义大量的类名，并且需要处理各种样式冲突的问题。而Tailwind CSS通过提供一套原子化的CSS工具类，让我们可以直接在HTML中构建复杂的界面，无需编写自定义CSS。
+            </p>
+            
+            <h3 class="text-xl font-bold mt-8 mb-4">一、Tailwind CSS的核心优势</h3>
+            
+            <p class="mb-4">
+              Tailwind CSS的核心优势主要体现在以下几个方面：
+            </p>
+            
+            <ul class="list-disc pl-6 mb-6">
+              <li>原子化CSS，无需编写自定义样式</li>
+              <li>高度可定制化，可以通过配置文件自定义主题</li>
+              <li>响应式设计友好，内置多种屏幕尺寸前缀</li>
+              <li>优化的生产环境构建，自动移除未使用的样式</li>
+              <li>丰富的插件生态，扩展框架功能</li>
+            </ul>
+            
+            <h3 class="text-xl font-bold mt-8 mb-4">二、安装与配置</h3>
+            
+            <p class="mb-4">
+              Tailwind CSS的安装非常简单，我们可以通过npm进行安装：
+            </p>
+            
+            <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+              <code>
+npm install -D tailwindcss
+npx tailwindcss init
+              </code>
+            </pre>
+            
+            <p class="mb-4">
+              安装完成后，我们需要在tailwind.config.js文件中配置内容路径：
+            </p>
+            
+            <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+              <code>
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{html,js}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+              </code>
+            </pre>
+            
+            <h3 class="text-xl font-bold mt-8 mb-4">三、实战案例：构建响应式卡片</h3>
+            
+            <p class="mb-4">
+              下面我们通过一个简单的卡片组件来演示Tailwind CSS的使用方式：
+            </p>
+            
+            <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+              <code>
+&lt;div class="bg-white rounded-lg shadow-md overflow-hidden max-w-sm mx-auto"&gt;
+  &lt;img src="https://picsum.photos/400/200" alt="卡片图片" class="w-full h-48 object-cover"&gt;
+  &lt;div class="p-6"&gt;
+    &lt;h3 class="text-xl font-bold mb-2"&gt;卡片标题&lt;/h3&gt;
+    &lt;p class="text-gray-600 mb-4"&gt;这是一个使用Tailwind CSS构建的响应式卡片组件&lt;/p&gt;
+    &lt;button class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"&gt;
+      点击按钮
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+              </code>
+            </pre>
+            
+            <p class="mb-4">
+              通过上面的代码，我们可以快速构建一个精美的卡片组件，而无需编写任何自定义CSS样式。这就是Tailwind CSS的强大之处。
+            </p>
+            
+            <h3 class="text-xl font-bold mt-8 mb-4">四、总结与展望</h3>
+            
+            <p class="mb-4">
+              Tailwind CSS正在改变前端开发的方式，它让样式开发变得更加高效和灵活。虽然刚开始使用时可能会觉得HTML代码变得冗长，但一旦熟悉了各种工具类的使用，你就会发现它带来的生产力提升是巨大的。
+            </p>
+            
+            <p>
+              未来，Tailwind CSS还会继续发展，相信会有更多的开发者加入到这个生态中。如果你还没有尝试过Tailwind CSS，不妨从今天开始学习和使用它，相信它会给你带来全新的开发体验。
+            </p>
+          </div>
+          
+          <!-- 文章底部互动区域 -->
+          <div class="mt-10 pt-6 border-t border-gray-200">
+            <div class="flex justify-between items-center mb-8">
+              <div class="flex space-x-4">
+                <button class="flex items-center text-gray-600 hover:text-primary transition-colors">
+                  <i class="fa fa-heart-o mr-2"></i>
+                  <span>喜欢 (128)</span>
+                </button>
+                <button class="flex items-center text-gray-600 hover:text-primary transition-colors">
+                  <i class="fa fa-bookmark-o mr-2"></i>
+                  <span>收藏 (86)</span>
+                </button>
+              </div>
+              <div class="flex space-x-2">
+                <button class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center">
+                  <i class="fa fa-weibo text-gray-700"></i>
+                </button>
+                <button class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center">
+                  <i class="fa fa-wechat text-gray-700"></i>
+                </button>
+                <button class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center">
+                  <i class="fa fa-twitter text-gray-700"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- 评论区标题 -->
+            <h3 class="text-xl font-bold mb-6">评论区 (26)</h3>
+            
+            <!-- 评论输入框 -->
+            <div class="bg-gray-50 rounded-lg p-4 mb-8">
+              <textarea placeholder="分享你的想法..." class="w-full border border-gray-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary h-24 resize-none mb-4"></textarea>
+              <div class="flex justify-end">
+                <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                  发布评论
+                </button>
+              </div>
+            </div>
+            
+            <!-- 评论列表 -->
+            <div class="space-y-6">
+              <!-- 评论1 -->
+              <div class="flex">
+                <img src="https://picsum.photos/100/100?random=11" alt="评论者头像" class="w-10 h-10 rounded-full object-cover">
+                <div class="ml-3 flex-1">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-medium">李四</h4>
+                    <span class="text-sm text-gray-500">2天前</span>
+                  </div>
+                  <p class="text-gray-700 mt-1">写得非常详细，对我这种Tailwind初学者帮助很大，感谢作者分享！</p>
+                  <div class="flex items-center mt-2 text-sm">
+                    <button class="text-gray-500 hover:text-primary mr-4">
+                      <i class="fa fa-heart-o mr-1"></i> 24
+                    </button>
+                    <button class="text-gray-500 hover:text-primary">
+                      <i class="fa fa-reply mr-1"></i> 回复
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 评论2 -->
+              <div class="flex">
+                <img src="https://picsum.photos/100/100?random=12" alt="评论者头像" class="w-10 h-10 rounded-full object-cover">
+                <div class="ml-3 flex-1">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-medium">王五</h4>
+                    <span class="text-sm text-gray-500">1天前</span>
+                  </div>
+                  <p class="text-gray-700 mt-1">请问作者，Tailwind CSS在大型项目中的性能表现如何？会不会导致CSS文件过大？</p>
+                  <div class="flex items-center mt-2 text-sm">
+                    <button class="text-gray-500 hover:text-primary mr-4">
+                      <i class="fa fa-heart-o mr-1"></i> 16
+                    </button>
+                    <button class="text-gray-500 hover:text-primary">
+                      <i class="fa fa-reply mr-1"></i> 回复
+                    </button>
+                  </div>
+                  
+                  <!-- 嵌套回复 -->
+                  <div class="mt-4 ml-4 pt-4 border-t border-gray-100">
+                    <div class="flex">
+                      <img src="https://picsum.photos/100/100?random=10" alt="作者头像" class="w-8 h-8 rounded-full object-cover">
+                      <div class="ml-2 flex-1">
+                        <div class="flex items-center justify-between">
+                          <h4 class="font-medium text-primary">张三 <span class="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded ml-2">作者</span></h4>
+                          <span class="text-sm text-gray-500">1天前</span>
+                        </div>
+                        <p class="text-gray-700 mt-1">您好，Tailwind CSS在生产环境中会通过PurgeCSS移除未使用的样式，最终的CSS文件体积通常只有几KB到几十KB，性能表现非常优秀。</p>
+                        <div class="flex items-center mt-2 text-sm">
+                          <button class="text-gray-500 hover:text-primary mr-4">
+                            <i class="fa fa-heart-o mr-1"></i> 8
+                          </button>
+                          <button class="text-gray-500 hover:text-primary">
+                            <i class="fa fa-reply mr-1"></i> 回复
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 关于我区域 -->
+    <section id="about" class="py-12 md:py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+          <div class="w-full md:w-1/3">
+            <img src="https://picsum.photos/600/600?random=20" alt="个人头像" class="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover border-4 border-white shadow-lg mx-auto">
+          </div>
+          <div class="w-full md:w-2/3">
+            <h2 class="text-3xl md:text-4xl font-bold text-dark mb-6">关于我</h2>
+            <p class="text-gray-600 mb-4 text-lg">
+              大家好，我是张三，一名热爱技术的资深前端工程师，拥有5年Web开发经验。
+            </p>
+            <p class="text-gray-600 mb-6 text-lg">
+              我专注于前端开发领域，精通HTML、CSS、JavaScript以及Vue、React等主流前端框架。同时也具备一定的后端开发能力，能够独立完成全栈项目的开发与部署。
+            </p>
+            <p class="text-gray-600 mb-8 text-lg">
+              创办这个博客的初衷是为了记录自己的技术成长历程，分享实战经验和学习心得，希望能够帮助到更多正在学习编程的小伙伴。
+            </p>
+            
+            <div class="flex flex-wrap gap-4 mb-8">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                  <i class="fa fa-code text-xl"></i>
+                </div>
+                <div class="ml-3">
+                  <h4 class="font-medium">5+</h4>
+                  <p class="text-sm text-gray-500">开发经验</p>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+                  <i class="fa fa-file-text-o text-xl"></i>
+                </div>
+                <div class="ml-3">
+                  <h4 class="font-medium">100+</h4>
+                  <p class="text-sm text-gray-500">原创文章</p>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                  <i class="fa fa-laptop text-xl"></i>
+                </div>
+                <div class="ml-3">
+                  <h4 class="font-medium">50+</h4>
+                  <p class="text-sm text-gray-500">实战项目</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex space-x-4">
+              <a href="#" class="w-10 h-10 rounded-full bg-[#1DA1F2] text-white flex items-center justify-center hover:bg-[#1a91da] transition-colors">
+                <i class="fa fa-twitter"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:bg-[#166fe5] transition-colors">
+                <i class="fa fa-facebook"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:bg-[#20bc56] transition-colors">
+                <i class="fa fa-whatsapp"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-[#E60023] text-white flex items-center justify-center hover:bg-[#d00020] transition-colors">
+                <i class="fa fa-github"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-[#FF0000] text-white flex items-center justify-center hover:bg-[#e60000] transition-colors">
+                <i class="fa fa-youtube-play"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 订阅区域 -->
+    <section class="py-12 md:py-16 bg-primary text-white">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">订阅我的博客</h2>
+        <p class="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
+          输入你的邮箱地址，及时获取最新的文章更新和技术分享
+        </p>
+        <div class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+          <input type="email" placeholder="请输入你的邮箱地址" class="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-white">
+          <button class="bg-white text-primary font-medium px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors">
+            立即订阅
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-gray-400 py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-white text-xl font-bold mb-4 flex items-center">
+            <i class="fa fa-pencil-square-o mr-2"></i>
+            文心博客
+          </h3>
+          <p class="mb-4">
+            记录技术成长，分享生活感悟
+          </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-twitter"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-github"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-linkedin"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+              <i class="fa fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-white font-medium mb-4">快速链接</h4>
+          <ul class="space-y-2">
+            <li><a href="#home" class="hover:text-white transition-colors">首页</a></li>
+            <li><a href="#blog" class="hover:text-white transition-colors">博客</a></li>
+            <li><a href="#categories" class="hover:text-white transition-colors">分类</a></li>
+            <li><a href="#about" class="hover:text-white transition-colors">关于我</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-white font-medium mb-4">博客分类</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-white transition-colors">前端开发</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">后端技术</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">项目实战</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">生活感悟</a></li>
+            <li><a href="http://103.217.186.164:8090/lolsp.html" class="hover:text-white transition-colors">生活感悟</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-white font-medium mb-4">联系我</h4>
+          <ul class="space-y-2">
+            <li class="flex items-center">
+              <i class="fa fa-envelope-o mr-2"></i>
+              <a href="mailto:zhangsan@example.com" class="hover:text-white transition-colors">zhangsan@example.com</a>
+            </li>
+            <li class="flex items-center">
+              <i class="fa fa-phone mr-2"></i>
+              <span>138-0000-0000</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fa fa-map-marker mr-2"></i>
+              <span>北京市朝阳区某某大厦</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-700 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
+        <p>&copy; 2025 文心博客. 保留所有权利.</p>
+        <div class="mt-4 md:mt-0 flex space-x-6">
+          <a href="#" class="hover:text-white transition-colors">隐私政策</a>
+          <a href="#" class="hover:text-white transition-colors">使用条款</a>
+          <a href="#" class="hover:text-white transition-colors">站点地图</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // 移动端菜单切换
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // API配置
+    // const VIDEO_API_URL = "https://cn.apihz.cn/api/fun/girl.php?id=10010995&key=f874f59477e24e37248b40a22814d6c4";
+    // 可选：如果需要切换不同视频，可以递增id
+    let currentVideoId = 10010995;
+    // 记录上一条视频地址（接口随机返回，用于重复时自动重取）
+    let lastVideoUrl = '';
+    // 接口仅返回视频直链（code/msg/mp4_video），标题/描述/分类本地生成
+    const VIDEO_TITLES = ['夏日限定的甜', '温柔风随拍', '今天也要开心呀', '高质量女生日常', '阳光正好的午后', '元气满满的一天', '氛围感拉满', '生活边角料', '做自己的光', '慢节奏生活'];
+    const VIDEO_DESCS = ['生活不在别处，当下即是全部。', '把普通的日子过得浪漫一点。', '今天的风是温柔的，记得开心。', '记录每一个值得被珍藏的瞬间。', '保持热爱，奔赴下一场山海。', '慢下来，感受生活的美好。', '愿所有美好都如约而至。', '随手拍下的小确幸，分享给你们。'];
+    const VIDEO_TYPES = ['生活随拍', '日常分享', '治愈系', '随拍记录'];
+
+    // 获取DOM元素
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const blogCardContainer = document.getElementById('blog-card-container');
+    const lifeVideoContainer = document.getElementById('life-video-container');
+    const loadMoreContainer = document.getElementById('load-more-container');
+    const lifeVideo = document.getElementById('life-video');
+    const videoSource = document.getElementById('video-source');
+    const videoTitle = document.getElementById('video-title');
+    const videoDesc = document.getElementById('video-desc');
+    const videoType = document.getElementById('video-type');
+    const videoSize = document.getElementById('video-size');
+    const nextVideoBtn = document.getElementById('next-video-btn');
+    const videoLoading = document.getElementById('video-loading');
+    const videoError = document.getElementById('video-error');
+    const errorMessage = document.getElementById('error-message');
+
+    /**
+     * 格式化文件大小
+     * @param {string|number} bytes 字节数
+     * @returns {string} 格式化后的大小字符串
+     */
+    function formatFileSize(bytes) {
+      bytes = parseInt(bytes);
+      if (isNaN(bytes)) return '未知';
+      if (bytes < 1024) return bytes + ' B';
+      else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      else return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    /**
+     * 通过 HEAD 请求读取视频文件大小（CDN 返回 Content-Length）
+     * @param {string} url 视频直链
+     * @returns {Promise<string>} 格式化后的大小，失败返回空串
+     */
+    async function fetchFileSize(url) {
+      // 优先 HEAD，读 Content-Length（部分CDN会中断BODY但响应头仍可读）
+      try {
+        const res = await fetch(url, { method: 'HEAD' });
+        const len = res.headers.get('Content-Length');
+        if (len) return formatFileSize(len);
+      } catch (e) { /* 忽略，继续兜底 */ }
+      // 兜底：Range 请求取 Content-Range 里的总大小（bytes 0-0/总数）
+      try {
+        const res = await fetch(url, { headers: { 'Range': 'bytes=0-0' } });
+        const range = res.headers.get('Content-Range');
+        const match = range && range.match(/\/(\d+)\s*$/);
+        if (match) return formatFileSize(match[1]);
+        const len = res.headers.get('Content-Length');
+        if (len) return formatFileSize(len);
+      } catch (e) { /* 忽略 */ }
+      return '';
+    }
+
+    /**
+     * 从API获取视频数据
+     */
+    async function fetchVideoData() {
+      // 显示加载状态
+      videoLoading.classList.remove('hidden');
+      nextVideoBtn.classList.add('loading-state');
+      videoError.classList.add('hidden');
+
+      try {
+        // 接口为随机返回，最多尝试3次，避免和上一条重复
+        const apiUrl = `https://api.kuleu.com/api/MP4_xiaojiejie?type=json`;
+        let data = null;
+        for (let attempt = 0; attempt < 3; attempt++) {
+          const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+          });
+          data = await response.json();
+          if (data.code === 200 && data.mp4_video && data.mp4_video !== lastVideoUrl) break;
+        }
+
+        // 检查返回码（成功响应：{code:200,msg:"成功",mp4_video:"https://..."}）
+        if (!data || data.code !== 200 || !data.mp4_video) {
+          throw new Error((data && data.msg) || '获取视频失败，API返回异常');
+        }
+
+        // 渲染视频数据
+        renderVideo(data);
+
+      } catch (error) {
+        // 显示错误信息
+        console.error('获取视频失败：', error);
+        errorMessage.textContent = error.message || '获取视频失败，请稍后重试';
+        videoError.classList.remove('hidden');
+      } finally {
+        // 隐藏加载状态
+        videoLoading.classList.add('hidden');
+        nextVideoBtn.classList.remove('loading-state');
+      }
+    }
+
+    /**
+     * 渲染视频数据到页面
+     * @param {object} videoData API返回的视频数据
+     */
+    function renderVideo(videoData) {
+      // 接口只提供视频直链
+      const videoUrl = videoData.mp4_video;
+      lastVideoUrl = videoUrl;
+
+      // 本地生成标题/描述/分类（接口不返回这些字段）
+      const idx = currentVideoId % VIDEO_TITLES.length;
+      videoTitle.textContent = VIDEO_TITLES[idx];
+      videoDesc.textContent = VIDEO_DESCS[idx % VIDEO_DESCS.length];
+      videoType.textContent = `分类：${VIDEO_TYPES[idx % VIDEO_TYPES.length]}`;
+
+      // 视频大小通过 HEAD 请求 Content-Length 获取
+      videoSize.textContent = '视频大小：获取中...';
+      fetchFileSize(videoUrl).then(sizeText => {
+        videoSize.textContent = sizeText ? `视频大小：${sizeText}` : '视频大小：未知';
+      });
+
+      // 设置视频源并加载播放
+      videoSource.src = videoUrl;
+      lifeVideo.load();
+      // 浏览器可能拦截带声音自动播放，被拒时静音再播
+      const playPromise = lifeVideo.play();
+      if (playPromise && playPromise.catch) {
+        playPromise.catch(() => {
+          lifeVideo.muted = true;
+          lifeVideo.play().catch(() => {});
+        });
+      }
+
+      // 递增编号，用于下一次切换标题
+      currentVideoId++;
+    }
+
+    // 下一个视频功能
+    nextVideoBtn.addEventListener('click', fetchVideoData);
+
+    // 分类筛选功能
+    categoryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // 移除所有按钮的激活状态
+        categoryBtns.forEach(b => {
+          b.classList.remove('active', 'bg-primary', 'text-white');
+          b.classList.add('bg-gray-200', 'text-gray-700');
+        });
+        
+        // 添加当前按钮的激活状态
+        btn.classList.add('active', 'bg-primary', 'text-white');
+        btn.classList.remove('bg-gray-200', 'text-gray-700');
+        
+        // 获取当前分类
+        const category = btn.getAttribute('data-category');
+        console.log(`筛选分类: ${category}`);
+
+        // 切换显示内容：生活感悟显示视频，其他显示博客卡片
+        if (category === 'life') {
+          blogCardContainer.classList.add('hidden');
+          loadMoreContainer.classList.add('hidden');
+          lifeVideoContainer.classList.remove('hidden');
+          // 首次切换到生活感悟时获取视频
+          fetchVideoData();
+        } else {
+          blogCardContainer.classList.remove('hidden');
+          loadMoreContainer.classList.remove('hidden');
+          lifeVideoContainer.classList.add('hidden');
+          
+          // 其他分类的博客筛选逻辑（原有功能保留）
+          const blogCards = document.querySelectorAll('.blog-card-hover');
+          blogCards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+        }
+      });
+    });
+    
+    // 文章详情模态框
+    const articleLinks = document.querySelectorAll('a[href="#article-detail"]');
+    const articleDetail = document.getElementById('article-detail');
+    const closeDetail = document.getElementById('close-detail');
+    
+    articleLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        articleDetail.classList.remove('hidden');
+        // 禁止背景滚动
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    
+    closeDetail.addEventListener('click', () => {
+      articleDetail.classList.add('hidden');
+      // 恢复背景滚动
+      document.body.style.overflow = '';
+    });
+    
+    // 点击模态框背景关闭
+    articleDetail.addEventListener('click', (e) => {
+      if (e.target === articleDetail) {
+        articleDetail.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    });
+    
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        if (this.getAttribute('href') === '#article-detail') return;
+        
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+          
+          // 关闭移动端菜单
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+          }
+        }
+      });
+    });
+    
+    // 滚动时导航栏样式变化
+    window.addEventListener('scroll', () => {
+      const header = document.querySelector('header');
+      if (window.scrollY > 50) {
+        header.classList.add('shadow-md');
+        header.classList.remove('shadow-sm');
+      } else {
+        header.classList.add('shadow-sm');
+        header.classList.remove('shadow-md');
+      }
+    });
+
+    // 初始化页面
+    window.onload = function() {
+      // 初始状态隐藏视频相关元素
+      videoLoading.classList.add('hidden');
+      videoError.classList.add('hidden');
+    };
+  </script>
+</body>
+</html>
